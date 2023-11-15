@@ -19,24 +19,24 @@ A2：
     a) j < sℓ - 1：(格子数量小于黑块数量)
     当 j 的值小于序列中第 ℓ 个块的长度减一时，这意味着当前格子数不足以容纳该黑色块。因此，在这种情况下，T(j, ℓ) 为假（false）。
 
-    b) j = sℓ - 1：（(格子数量等于黑块数量)）
-    当 j 等于序列中第 ℓ 个块的长度减一时，这意味着当前格子刚好能够容纳第 ℓ 个黑色块。但是，是否能放置这个黑色块还取决于之前的格子是否可以放置前 ℓ - 1 个黑色块。因此，在这种情况下，T(j, ℓ) 的值取决于 T(j - sℓ, ℓ - 1) 的值。
-
-
-    这段话的法语翻译是：
+    b) j = sℓ - 1：
+    当 j 等于序列中第 ℓ 个块的长度减一时，这意味着当前格子刚好能够容纳第 ℓ 个黑色块。所以如果l = 1时，为真，否则为假。
 
     1. Cas ℓ = 0：
     Lorsque ℓ = 0, il n'y a aucun bloc noir à placer. Par conséquent, T(j, ℓ) est toujours vrai (true) dans ce cas. Cela est dû au fait qu'une séquence vide peut toujours être placée, quel que soit la valeur de j.
 
-2   2. Cas ℓ ≥ 1：
+    2. Cas ℓ ≥ 1：
     a) j < sℓ - 1 : 
     Lorsque la valeur de j est inférieure à la longueur du bloc ℓ dans la séquence moins un, cela signifie que le nombre actuel de cases est insuffisant pour accueillir ce bloc noir. Par conséquent, dans ce cas, T(j, ℓ) est faux (false).
 
     b) j = sℓ - 1 : 
-    Lorsque j est égal à la longueur du bloc ℓ dans la séquence moins un, cela signifie que le nombre actuel de cases peut juste accueillir le bloc ℓ. Cependant, la possibilité de placer ce bloc noir dépend également de la capacité des cases précédentes à accueillir les ℓ - 1 premiers blocs noirs. Par conséquent, dans ce cas, la valeur de T(j, ℓ) dépend de T(j - sℓ, ℓ - 1).
+    Lorsque j est égal à la longueur du bloc ℓ dans la séquence moins un, cela signifie que le nombre actuel de cases peut juste accueillir le bloc ℓ. Donc si l = 1, alors T(j, 1) est vrai. Sinon faux.
 
 
 Q3. 
     Exprimez une relation de r´ecurrence permettant de calculer T(j, ℓ) dans le cas 2c en fonction de deux valeurs T(j', l') avec j'< j, l' < l
 A3.
+    T(j, ℓ) = T(j - 1, ℓ) || T(j-sℓ-1, ℓ - 1)
+    因为如果格子比当前少（j - 1）, 都能填上前l个色块，那么当前的格子数一定也能填上。 或者如果格子比当前少sl-1个时能填上l - 1的色块，那么当前格子一定能填上。
     
+    Car si on peut placer les ℓ premiers blocs noirs dans un cas où il y a une case en moins (j - 1), alors on peut certainement les placer avec le nombre actuel de cases. Ou, si on peut placer les ℓ - 1 premiers blocs noirs avec j - sℓ - 1 cases, alors on peut aussi les placer dans le cas actuel.
