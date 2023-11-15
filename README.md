@@ -38,5 +38,26 @@ Q3.
 A3.
     T(j, ℓ) = T(j - 1, ℓ) || T(j-sℓ-1, ℓ - 1)
     因为如果格子比当前少（j - 1）, 都能填上前l个色块，那么当前的格子数一定也能填上。 或者如果格子比当前少sl-1个时能填上l - 1的色块，那么当前格子一定能填上。
-    
+
     Car si on peut placer les ℓ premiers blocs noirs dans un cas où il y a une case en moins (j - 1), alors on peut certainement les placer avec le nombre actuel de cases. Ou, si on peut placer les ℓ - 1 premiers blocs noirs avec j - sℓ - 1 cases, alors on peut aussi les placer dans le cas actuel.
+
+Q4.
+    Voir Util.java
+
+
+1.2
+Q5.
+    Modifiez chacun des cas de l’algorithme pr´ec´edent afin qu’il prenne en compte les cases d´ej`a colori´ees.
+A5.
+    l = 0:
+        传入的有色行中不能有黑色块，否则为false。
+    l >= 1 && j < sℓ - 1:
+        false
+    l >= 1 && j = sℓ - 1:
+        l == 1 && 传入的有色行中不能有白色块
+    l >= 1 && j > sℓ - 1:
+        最后一块为白/空：T(j - 1, ℓ)
+        最后一块为黑：
+            T(j-sℓ-1, ℓ - 1) && j - sℓ 个格子到第 j 个格子都是黑且j-sl-1为白： T(j-sℓ-1, ℓ - 1)
+            否则：false
+

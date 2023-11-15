@@ -7,6 +7,18 @@ public class Test {
         seq.add(1);
         seq.add(2);
 
-        System.out.println(Util.canColorEntireRow(5, seq));
+        System.out.println(Util.canColorEntireRow(5, new ArrayList<Integer>(seq)));
+
+        ArrayList<String> coloredLigne = new ArrayList<String>();
+        coloredLigne.add("Black");
+        coloredLigne.add("Empty");
+        coloredLigne.add("Black");
+        coloredLigne.add("White");
+        coloredLigne.add("Black");
+        coloredLigne.add("Black");
+        coloredLigne.add("Black");
+
+        System.out.println(Util.canColorEntireRow2(6, new ArrayList<Integer>(seq), new ArrayList<String>(coloredLigne)));
+
     }
 }
