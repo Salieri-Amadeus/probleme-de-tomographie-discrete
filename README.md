@@ -50,14 +50,15 @@ Q5.
     Modifiez chacun des cas de l’algorithme pr´ec´edent afin qu’il prenne en compte les cases d´ej`a colori´ees.
 A5.
     l = 0:
-        传入的有色行中不能有黑色块，否则为false。
+        传入的有色行中不能有黑色块，否则为false。  O(n)
     l >= 1 && j < sℓ - 1:
-        false
+        false                               O(1)
     l >= 1 && j = sℓ - 1:
-        l == 1 && 传入的有色行中不能有白色块
+        l == 1 && 传入的有色行中不能有白色块    O(n)
     l >= 1 && j > sℓ - 1:
-        最后一块为白/空：T(j - 1, ℓ)
-        最后一块为黑：
-            T(j-sℓ-1, ℓ - 1) && j - sℓ 个格子到第 j 个格子都是黑且j-sl-1为白： T(j-sℓ-1, ℓ - 1)
+        最后一块为白/空：T(j - 1, ℓ)            O(1)
+        最后一块为黑：                          O(1)
+            j - sℓ 个格子到第 j 个格子都是黑且j-sl-1为白： T(j-sℓ-1, ℓ - 1)
             否则：false
+递归最多调用j次，每次调用O(1)或O(n)，所以总的时间复杂度为O(nj)
 
