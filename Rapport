@@ -1,0 +1,44 @@
+Rapport:
+
+1.1 Premi`ere ´etape
+Q1. 
+     On détermine si toute la ligne peut être colorée en vérifiant la valeur de T(M-1, k), où M est le nombre de colonnes et k est la longueur de la séquence. Si T(M-1, k) est vrai, cela signifie que toute la ligne li peut être colorée en utilisant la séquence entière.
+Q2.
+    1. Cas ℓ = 0：
+    Lorsque ℓ = 0, il n'y a aucun bloc noir à placer. Par conséquent, T(j, ℓ) est toujours vrai (true) dans ce cas. Cela est dû au fait qu'une séquence vide peut toujours être placée, quel que soit la valeur de j.
+
+    2. Cas ℓ ≥ 1：
+    a) j < sℓ - 1 : 
+    Lorsque la valeur de j est inférieure à la longueur du bloc ℓ dans la séquence moins un, cela signifie que le nombre actuel de cases est insuffisant pour accueillir ce bloc noir. Par conséquent, dans ce cas, T(j, ℓ) est faux (false).
+
+    b) j = sℓ - 1 : 
+    Lorsque j est égal à la longueur du bloc ℓ dans la séquence moins un, cela signifie que le nombre actuel de cases peut juste accueillir le bloc ℓ. Donc si l = 1, alors T(j, 1) est vrai. Sinon faux.
+Q3.
+     Car si on peut placer les ℓ premiers blocs noirs dans un cas où il y a une case en moins (j - 1), alors on peut certainement les placer avec le nombre actuel de cases. Ou, si on peut placer les ℓ - 1 premiers blocs noirs avec j - sℓ - 1 cases, alors on peut aussi les placer dans le cas actuel.
+Q4.
+    Voir Util.java
+
+1.2 G´en´eralisation
+Q5.
+    l = 0 :
+    Si la ligne colorée contient des blocs noirs, alors c'est faux. Complexité : O(n)
+
+    l ≥ 1 && j < sℓ - 1 :
+    Faux. Complexité : O(1)
+
+    l ≥ 1 && j = sℓ - 1 :
+    l == 1 et la ligne colorée ne doit pas contenir de blocs blancs. Complexité : O(n)
+
+    l ≥ 1 && j > sℓ - 1 :
+    Si le dernier bloc est blanc : T(j - 1, ℓ). Complexité : O(1)
+    Si le dernier bloc est noir :
+    Si les cases du j - sℓ au j sont noires et que la case j - sl - 1 est blanche : T(j - sℓ - 1, ℓ - 1).
+    Sinon : Faux. Complexité : O(1)
+    Si le dernier bloc est vide : T(j - 1, ℓ) || T(j - sℓ - 1, ℓ - 1).
+
+   
+Q6.
+    L'appel récursif est effectué au maximum j fois, chaque appel ayant une complexité de O(1) ou O(n), donc la complexité temporelle totale est O(nj).
+
+Q7.
+    Voir Util.java.

@@ -1,4 +1,4 @@
-import java.lang.reflect.Array;
+import java.io.*;
 import java.util.*;
 
 public class Util {
@@ -169,13 +169,20 @@ public class Util {
             ArrayList<Integer> nouveauxColonne = new ArrayList<Integer>();
             ArrayList<Integer> ligneToDelete = new ArrayList<Integer>();
             ArrayList<Integer> colonneToDelete = new ArrayList<Integer>();
+            System.out.println(ligneAVoir);
+            System.out.println(colonneAVoir);
 
             for(int i: ligneAVoir){
                 ArrayList<String> oldLigne = new ArrayList<String>(res.getLigne(i));
                 ArrayList<String> ligne = res.getLigne(i);
 
+                if(!canColorEntireRow2(ligne.size() - 1, res.getLigSeqs().get(i), ligne)){
+                    return new ColoreResult("false", null);
+                }
+
                 boolean b = coloreLigne(res, i);
                 ligne = res.getLigne(i);
+
                 if(!b){
                     return new ColoreResult("false", null);
                 }
@@ -197,6 +204,10 @@ public class Util {
             for(int i: colonneAVoir){
                 ArrayList<String> oldColonne = new ArrayList<String>(res.getColonne(i));
                 ArrayList<String> colonne = res.getColonne(i);
+
+                if(!canColorEntireRow2(colonne.size() - 1, res.getColSeqs().get(i), colonne)){
+                    return new ColoreResult("false", null);
+                }
 
                 boolean b = coloreColonne(res, i);
                 colonne = res.getColonne(i);
@@ -231,5 +242,185 @@ public class Util {
         return new ColoreResult("true", res);
     }
 
-    
+    public static Grille fileToGrille(String filePath) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        ArrayList<ArrayList<Integer>> ligSeqs = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> colSeqs = new ArrayList<>();
+        boolean isColSeqs = false;
+
+        while ((line = reader.readLine()) != null) {
+            if (line.equals("#")) {
+                isColSeqs = true;
+                continue;
+            }
+
+            ArrayList<Integer> seq = new ArrayList<>();
+            for (String num : line.split(" ")) {
+                if(num.equals("")) continue;
+                seq.add(Integer.parseInt(num));
+            }
+
+            if (isColSeqs) {
+                colSeqs.add(seq);
+            } else {
+                ligSeqs.add(seq);
+            }
+        }
+
+        reader.close();
+        return new Grille(ligSeqs.size(), colSeqs.size(), ligSeqs, colSeqs);
+    }
+
+    public static ColoreResult colorierEtPropager(Grille A, int i0, int j0, String c){
+        A.setCase(i0, j0, c);
+        Grille res = A.clone();
+        ArrayList<Integer> ligneAVoir = new ArrayList<Integer>();
+        ArrayList<Integer> colonneAVoir = new ArrayList<Integer>();
+
+        ligneAVoir.add(i0);
+        colonneAVoir.add(j0);
+
+        while(!ligneAVoir.isEmpty() || !colonneAVoir.isEmpty()){
+            ArrayList<Integer> nouveauxLigne = new ArrayList<Integer>();
+            ArrayList<Integer> nouveauxColonne = new ArrayList<Integer>();
+            ArrayList<Integer> ligneToDelete = new ArrayList<Integer>();
+            ArrayList<Integer> colonneToDelete = new ArrayList<Integer>();
+
+            for(int i: ligneAVoir){
+                ArrayList<String> oldLigne = new ArrayList<String>(res.getLigne(i));
+                ArrayList<String> ligne = res.getLigne(i);
+
+                boolean b = coloreLigne(res, i);
+                ligne = res.getLigne(i);
+
+                if(!canColorEntireRow2(ligne.size() - 1, res.getLigSeqs().get(i), ligne)){
+                    return new ColoreResult("false", null);
+                }
+
+                if(!b){
+                    return new ColoreResult("false", null);
+                }
+                else{
+                    for(int j = 0; j < ligne.size(); j++){
+                        if(!ligne.get(j).equals(oldLigne.get(j))){
+                            nouveauxColonne.add(j);
+                        }
+                    }
+                    for(int j: nouveauxColonne){
+                        if(!colonneAVoir.contains(j)){
+                            colonneAVoir.add(j);
+                        }
+                    }
+                    ligneToDelete.add(i);
+                }
+            }
+            ligneAVoir.removeAll(ligneToDelete);
+            for(int i: colonneAVoir){
+                ArrayList<String> oldColonne = new ArrayList<String>(res.getColonne(i));
+                ArrayList<String> colonne = res.getColonne(i);
+
+                if(!canColorEntireRow2(colonne.size() - 1, res.getColSeqs().get(i), colonne)){
+                    return new ColoreResult("false", null);
+                }
+
+                boolean b = coloreColonne(res, i);
+                colonne = res.getColonne(i);
+                if(!b){
+                    return new ColoreResult("false", null);
+                }
+                else{
+                    for(int j = 0; j < colonne.size(); j++){
+                        if(!colonne.get(j).equals(oldColonne.get(j))){
+                            nouveauxLigne.add(j);
+                        }
+                    }
+                    for(int j: nouveauxLigne){
+                        if(!ligneAVoir.contains(j)){
+                            ligneAVoir.add(j);
+                        }
+                    }
+                    colonneToDelete.add(i);
+                }
+            }
+            colonneAVoir.removeAll(colonneToDelete);
+        }
+        //检查grille中是否有empty
+        for(int i = 0; i < res.getNbLig(); i++){
+            for(int j = 0; j < res.getNbCol(); j++){
+                if(res.getCase(i, j).equals("Empty")){
+                    return new ColoreResult("ne sais pas", res);
+                }
+            }
+        }
+
+        return new ColoreResult("true", res);
+    }
+
+    public static ColoreResult enumRec(Grille A, int index, String couleur){
+        if(index == A.getNbCol() * A.getNbLig()){
+            return new ColoreResult("true", A);
+        }
+        int i = index / A.getNbCol();
+        int j = index % A.getNbCol();
+
+        A.setCase(i, j, couleur);
+        ColoreResult res = colorierEtPropager(A, i, j, couleur);
+        if(res.getSuccess().equals("false")){
+            return new ColoreResult("false", new Grille());
+        }
+        else if(res.getSuccess().equals("true")){
+            return res;
+        }
+        else{
+            int k = findNextUndetermined(A, index);
+            boolean b = false;
+            ColoreResult resBlack = enumRec(A.clone(), k, "Black");
+            ColoreResult resWhite = enumRec(A.clone(), k, "White");
+            if(b || resBlack.getSuccess().equals("true")){
+                return resBlack;
+            }
+            else if(b || resWhite.getSuccess().equals("true")){
+                return resWhite;
+            }
+            else{
+                return new ColoreResult("false", new Grille());
+            }
+        }
+    }
+
+    private static int findNextUndetermined(Grille grille, int start){
+        // 查找下一个未着色的格子
+        for(int k = start; k < grille.getNbCol() * grille.getNbLig(); k++){
+            int i = k / grille.getNbCol();
+            int j = k % grille.getNbCol();
+            if(grille.getCase(i, j).equals("Empty")){
+                return k;
+            }
+        }
+        return grille.getNbCol() * grille.getNbLig(); // 所有格子已经着色
+    }
+
+    public static ColoreResult enumeration(Grille A){
+        ColoreResult res = coloration(A);
+        if(res.getSuccess().equals("true")){
+            return res;
+        }
+        else if(res.getSuccess().equals("false")){
+            return new ColoreResult("false", new Grille());
+        }
+        else{
+            ColoreResult resBlack = enumRec(A.clone(), findNextUndetermined(A, 0), "Black");
+            ColoreResult resWhite = enumRec(A.clone(), findNextUndetermined(A, 0), "White");
+            if(resBlack.getSuccess().equals("true")){
+                return resBlack;
+            }
+            else if(resWhite.getSuccess().equals("true")){
+                return resWhite;
+            }
+            else{
+                return new ColoreResult("false", new Grille());
+            }
+        }
+    }
 }

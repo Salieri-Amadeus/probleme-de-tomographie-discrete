@@ -15,6 +15,5 @@ public class Test {
         coloredLigne.add("White");
 
         System.out.println(Util.canColorEntireRow2(4, new ArrayList<Integer>(seq), new ArrayList<String>(coloredLigne)));
-
     }
 }

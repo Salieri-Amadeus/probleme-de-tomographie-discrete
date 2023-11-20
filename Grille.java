@@ -22,6 +22,14 @@ public class Grille implements Cloneable {
         }
     }
 
+    public Grille(){
+        this.nbLig = 0;
+        this.nbCol = 0;
+        this.ligSeqs = new ArrayList<ArrayList<Integer>>();
+        this.colSeqs = new ArrayList<ArrayList<Integer>>();
+        this.cases = new ArrayList<ArrayList<String>>();
+    }
+
     public int getNbLig(){
         return this.nbLig;
     }
