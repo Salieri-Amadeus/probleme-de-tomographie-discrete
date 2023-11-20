@@ -33,7 +33,7 @@
 
 ## 1.3 Propagation
 
-**Q8.** 
+**Q8.** O(mnO(canColorEntireRow2))
 
 **Q9.** Voir Util.java
 
@@ -53,8 +53,7 @@
 | 10      | 12758393400   |
 
 **Instant 9:**
-
-Voir instance9.png
+![Local Image](instance9.png "Local Image Title")
 
 
 **Q11.**
@@ -68,7 +67,12 @@ Comme la stratégie adoptée est de ne colorier que si nous sommes absolument ce
 ## 2 Méthode complète de résolution
 
 **Q12.**  
+A(n) = 2A(n - 1) + 1
+r^2 - 2r - 1 = 0
+r = 2.414
+A(n) = O(2.414^n)
 
+Car dans chaque appel récursif, on a O(colorierEtPropager()) = O(mnO(canColorEntireRow())) . Alors on a O(O(colorierEtPropager()) * 2.414^n)
 
 ### 2.1 Implantation et tests
 
@@ -84,12 +88,10 @@ Black White White Black
 | 13      | 1344410800             | 178435017100           |
 | 14      | 55029600               | 6826201100             |
 | 15      | 73411700               | 4270023900             |
-| 16      | *Valeurs manquantes*   | *Valeurs manquantes*   |
+| 16      | timeout                | timeout                |
 
 **Instant 15 sans énumération:**
-
-Voir instance15_sans_enum.png
+![Local Image](instance15_sans_enum.png "Instant 15 sans énumération")
 
 **Instant 15 avec énumération:**
-
-Voir instance15_avec_enum.png
+![Local Image](instance15_avec_enum.png "Instant 15 avec énumération")
