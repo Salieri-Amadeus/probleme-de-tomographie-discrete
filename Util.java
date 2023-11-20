@@ -169,8 +169,6 @@ public class Util {
             ArrayList<Integer> nouveauxColonne = new ArrayList<Integer>();
             ArrayList<Integer> ligneToDelete = new ArrayList<Integer>();
             ArrayList<Integer> colonneToDelete = new ArrayList<Integer>();
-            System.out.println(ligneAVoir);
-            System.out.println(colonneAVoir);
 
             for(int i: ligneAVoir){
                 ArrayList<String> oldLigne = new ArrayList<String>(res.getLigne(i));
