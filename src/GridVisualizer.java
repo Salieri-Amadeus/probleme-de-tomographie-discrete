@@ -10,7 +10,7 @@ public class GridVisualizer {
     public static void main(String[] args) throws IOException {
 
         // 读取文本文件
-        File file = new File("input.txt"); // 创建 File 对象以指向您的文本文件
+        File file = new File("src/input.txt"); // 创建 File 对象以指向您的文本文件
         Scanner scanner = new Scanner(file); // 创建 Scanner 对象来读取文件内容
 
         int rows = 0; 
