@@ -54,7 +54,7 @@
 
 **Instant 9:**
 
-Voir instance9.png
+![Local Image](instance9.png "Local Image Title")
 
 
 **Q11.**
@@ -87,9 +87,7 @@ Black White White Black
 | 16      | *Valeurs manquantes*   | *Valeurs manquantes*   |
 
 **Instant 15 sans énumération:**
-
-Voir instance15_sans_enum.png
+![Local Image](instance15_sans_enum.png "Instant 15 sans énumération")
 
 **Instant 15 avec énumération:**
-
-Voir instance15_avec_enum.png
+![Local Image](instance15_avec_enum.png "Instant 15 avec énumération")
